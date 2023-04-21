@@ -22,7 +22,6 @@ Al ejecutar va a abrir la siguiente direccion en tu navegador: [http://localhost
 - src
   - components
   - context
-  - json
   - layout
   - pages
   - routes
