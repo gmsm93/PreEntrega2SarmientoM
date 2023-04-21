@@ -19,7 +19,7 @@ export const NavBarComponent = () => {
         <NavItem label="Inicio" src="/" />
         <NavItem label="Proximos estrenos" src="/estrenos" />
         <NavItem label="Peliculas" src="/peliculas" /> 
-        <CartComponent />
+        <NavItem label={<CartComponent />} src="/cart" />
       </div>
     </nav>
   );

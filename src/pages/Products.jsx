@@ -1,40 +1,38 @@
 import React from "react";
-import axios from "axios";
-import { ProductsData } from "../json";
 import { Card, Loader } from "../components";
-
-async function getAllProducts() {
-  return await axios("https://dummyjson.com/products");
-}
+import { collection, getDocs, getFirestore, query, where, doc } from "firebase/firestore";
 
 export const Products = () => {
-  const [productsData, setProductsData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
-
+  const [productData, setProductData] = React.useState([]);
+  const [error, setError] = React.useState(false);
   React.useEffect(() => {
-    getAllProducts()
-      .then((res) => {
-        setLoading(true);
-        setProductsData(res);
+    const db = getFirestore();
+    const itemsCollectionFiltered = query(
+      collection(db, "products"),
+      where("activo", "==", true),
+    );
+    getDocs(itemsCollectionFiltered)
+      .then((products) => {
+        if (products.length === 0) {
+          setError(true);
+        }
+        setProductData(
+          products.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        );
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.log(err))
       .then(() => setLoading(false));
-
   }, []);
-
-  if (!loading) {
-    console.log(productsData);
-  } else {
-    console.log("Loading...");
-  }
 
   return loading ? (
     <Loader />
   ) : (
     <div className="productos">
-      {ProductsData.map((producto) => (
+      {productData.map((producto) => (
         <Card key={producto.id} producto={producto} />
       ))}
+
     </div>
   );
 };

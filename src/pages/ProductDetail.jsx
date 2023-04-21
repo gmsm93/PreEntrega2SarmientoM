@@ -1,15 +1,32 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { CartButtons } from "../components";
-import { ProductsData } from "../json";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+
 
 export const ProductDetail = () => {
   const { productId } = useParams();
-  const producto = ProductsData.find((p) => p.id === productId);
+  const [productData, setProductData] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
 
-  if (!producto) {
-    return <div>Producto no encontrado</div>;
-  }
+  React.useEffect(() => {
+    const db = getFirestore();
+    const docRef = doc(db, "products", productId);
+    getDoc(docRef)
+      .then((product) => {
+        if (!product.exists()) {
+          setError(true);
+        }
+        setProductData({ id: product.id, ...product.data() });
+      })
+      .catch((err) => {
+        setError(true);
+      })
+      .then(() => {
+        setLoading(false);
+      });
+  }, [productId]);
 
   return (
     <div
@@ -24,20 +41,20 @@ export const ProductDetail = () => {
       <h1
         style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "20px" }}
       >
-        {producto.nombre}
+        {productData.nombre}
       </h1>
       <img
-        src={producto.imagen}
-        alt={producto.nombre}
+        src={productData.imagen}
+        alt={productData.nombre}
         className="img-fluid"
         style={{ maxWidth: "100%", marginBottom: "20px" }}
       />
-      <p style={{ marginBottom: "20px" }}>{producto.descripcion}</p>
+      <p style={{ marginBottom: "20px" }}>{productData.descripcion}</p>
       <span
         className="precio"
         style={{ fontSize: "20px", fontWeight: "bold", color: "darkgreen" }}
       >
-        USD $ {producto.precio}
+        USD $ {productData.precio}
       </span>
       <CartButtons />
     </div>
