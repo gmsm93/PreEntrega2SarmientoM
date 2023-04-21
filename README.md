@@ -17,21 +17,21 @@ Al ejecutar va a abrir la siguiente direccion en tu navegador: [http://localhost
 
 
 ## Estructura del proyecto
-|-¬node_modules
-|-¬public
-|-¬src
-|  |-¬components
-|  |-¬context
-|  |-¬json
-|  |-¬layout
-|  |-¬pages
-|  |-¬routes
-|  |-¬App.jsx
-|  |-¬App.module.css
-|  |-¬index.css
-|  |-¬index.js
-|  |-¬logo.svg
-|-¬.gitignore
-|-¬package-lock.json
-|-¬package.json
-|-¬README.md
+- node_modules
+- public
+- src
+  - components
+  - context
+  - json
+  - layout
+  - pages
+  - routes
+  - App.jsx
+  - App.module.css
+  - index.css
+  - index.js
+  - logo.svg
+- gitignore
+- package-lock.json
+- package.json
+- README.md
